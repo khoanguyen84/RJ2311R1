@@ -1,5 +1,7 @@
 export default function Footer(){
     return (
-        <footer className="bg-secondary py-3">Footer</footer>
+        <footer className="container py-3">
+            Copyright &copy; {(new Date).getFullYear()}
+        </footer>
     )
 }

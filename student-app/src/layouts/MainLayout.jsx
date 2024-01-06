@@ -4,15 +4,15 @@ import Sidebar from "../components/sidebar/Sidebar";
 
 export default function MainLayout({ children }) {
     return (
-        <div className="container">
+        <>
             <Header />
-            <div className="d-flex">
+            <div className="container d-flex">
                 <Sidebar />
-                <main className="flex-grow-1 bg-warning">
+                <main className="flex-grow-1">
                     {children}
                 </main>
             </div>
             <Footer />
-        </div>
+        </>
     )
 }
