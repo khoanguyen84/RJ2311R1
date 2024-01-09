@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
+import { FaUserTimes } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 export default function StudentList() {
     const [studentList, setStudentList] = useState([])
@@ -24,6 +27,28 @@ export default function StudentList() {
         }
         getStudentList()
     }, [])
+
+    const handleRemoveStudent = (student) => {
+        Swal.fire({
+            title: "Are you sure to remove this student?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let removeStudentRes = await fetch(`https://6596b23a6bb4ec36ca0329d0.mockapi.io/student/${student.id}`, {
+                    method: "DELETE"
+                })
+                let result = await removeStudentRes.json()
+                if (result) {
+                    toast.success('Student removed succeed')
+                }
+            }
+        })
+    }
     return (
         <>
             {
@@ -59,7 +84,13 @@ export default function StudentList() {
                                         <td className="text-end align-middle">{student.email}</td>
                                         <td className="text-end align-middle">{student.mobile}</td>
                                         <td className="text-end align-middle">{student.department.name}</td>
-                                        <td></td>
+                                        <td>
+                                            <div>
+                                                <FaUserTimes role="button" size={20} className="text-danger" title="Remove student"
+                                                    onClick={() => handleRemoveStudent(student)}
+                                                />
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
                             }
