@@ -53,6 +53,7 @@ export default function CreateStudent() {
         //         toast.success('Student created succeed', { theme: 'light' })
         //         setIsCreating(false)
         //     })
+        
         try {
             setIsCreating(true)
             let createStudentRes = await fetch('https://6596b23a6bb4ec36ca0329d0.mockapi.io/student', {

@@ -25,3 +25,12 @@
     height: 50px;
     border-radius: 50%;
 }
+.avatar-lg{
+    width: 220px;
+    height: 220px;
+    border-radius: 10px;
+}
+
+.border-dashed{
+    border-bottom: 1px dashed lightgrey
+}

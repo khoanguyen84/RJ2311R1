@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
-import { FaUserTimes } from "react-icons/fa";
+import { FaUserTimes, FaUserCog } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import ModifyStudentModal from "./ModifyStudentModal";
 
 export default function StudentList() {
     const [studentList, setStudentList] = useState([])
     const [loading, setLoading] = useState(false)
+    const [show, setShow] = useState(false)
+    const [selectedStudent, setSelectedStudent] = useState(null)
+    const [studentId, setStudentId] = useState(null)
     useEffect(() => {
         // function getStudentList() {
         //     fetch('https://6596b23a6bb4ec36ca0329d0.mockapi.io/student', {
@@ -26,28 +31,33 @@ export default function StudentList() {
             setLoading(false)
         }
         getStudentList()
-    }, [])
+    }, [selectedStudent])
 
     const handleRemoveStudent = (student) => {
         Swal.fire({
             title: "Are you sure to remove this student?",
             text: "You won't be able to revert this!",
-            icon: "warning",
+            // icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Confirm!"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 let removeStudentRes = await fetch(`https://6596b23a6bb4ec36ca0329d0.mockapi.io/student/${student.id}`, {
                     method: "DELETE"
                 })
-                let result = await removeStudentRes.json()
-                if (result) {
+                let removedStudent = await removeStudentRes.json()
+                if (removedStudent) {
                     toast.success('Student removed succeed')
+                    setSelectedStudent(removedStudent)
                 }
             }
         })
+    }
+    const handleModifyStudent = (student) => {
+        setShow(true)
+        setStudentId(student?.id)
     }
     return (
         <>
@@ -75,7 +85,9 @@ export default function StudentList() {
                                             <div className="d-flex align-items-center">
                                                 <img className="avatar-sm me-2" src={student.avatarUrl} alt="" />
                                                 <div className="d-flex flex-column">
-                                                    <span>{student.fullname}</span>
+                                                    <Link to={`/student/${student.id}`}>
+                                                        {student.fullname}
+                                                    </Link>
                                                     {Boolean(student.gender) ? <BsGenderMale className="text-primary" /> : <BsGenderFemale className="text-warning" />}
                                                 </div>
                                             </div>
@@ -85,9 +97,12 @@ export default function StudentList() {
                                         <td className="text-end align-middle">{student.mobile}</td>
                                         <td className="text-end align-middle">{student.department.name}</td>
                                         <td>
-                                            <div>
+                                            <div className="d-flex flex-column justify-content-center align-items-center">
                                                 <FaUserTimes role="button" size={20} className="text-danger" title="Remove student"
                                                     onClick={() => handleRemoveStudent(student)}
+                                                />
+                                                <FaUserCog role="button" size={20} className="text-primary" title="Modify student"
+                                                    onClick={() => handleModifyStudent(student)}
                                                 />
                                             </div>
                                         </td>
@@ -98,6 +113,7 @@ export default function StudentList() {
                     </table>
                 )
             }
+            <ModifyStudentModal show={show} handleClose={setShow} studentId={studentId} />
         </>
     )
 }
