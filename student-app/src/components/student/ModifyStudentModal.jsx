@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { FaSave, FaTimes } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
     fullname: yup.string().required(),
@@ -16,7 +17,7 @@ const schema = yup.object({
     avatarUrl: yup.string().url().required()
 })
 
-export default function ModifyStudentModal({ show, handleClose, studentId }) {
+export default function ModifyStudentModal({ show, handleClose, studentId, setStudentId }) {
     const [currentStudent, setCurrentStudent] = useState({})
     const [departmentList, setDepartmentList] = useState([])
     const [loading, setLoading] = useState(false)
@@ -57,6 +58,33 @@ export default function ModifyStudentModal({ show, handleClose, studentId }) {
         handleClose(false)
         setNewAvatarUrl(null)
     }
+
+    const handleModifyStudent = async (values) => {
+        console.log(values);
+        values = {
+            ...values,
+            department: JSON.parse(values.department)
+        }
+        try {
+            let modifyStudentRes = await fetch(`https://6596b23a6bb4ec36ca0329d0.mockapi.io/student/${studentId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(values)
+            })
+            let result = await modifyStudentRes.json(); // {} Object.keys(result).length   [] result.length
+            if(Object.keys(result).length){
+                toast.success('Student updated succeed')
+                handleClose(false)
+                setNewAvatarUrl(null)
+                setStudentId(null)
+            }
+
+        } catch (error) {
+            toast.error('Can not update student, please try again!')
+        }
+    }
     return (
         <Modal
             show={show}
@@ -68,7 +96,7 @@ export default function ModifyStudentModal({ show, handleClose, studentId }) {
             <Modal.Header closeButton>
                 <Modal.Title>Modify {currentStudent?.fullname}'s info</Modal.Title>
             </Modal.Header>
-            <form>
+            <form onSubmit={handleSubmit(handleModifyStudent)}>
                 <Modal.Body>
                     {
                         loading ? <p>Loading...</p> : (

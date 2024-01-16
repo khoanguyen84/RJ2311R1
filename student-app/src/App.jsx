@@ -6,12 +6,16 @@ import StudentPage from './pages/StudentPage'
 import StudentList from './components/student/StudentList'
 import CreateStudent from './components/student/CreateStudent'
 import StudentDetail from './components/student/StudentDetail'
+import LoginPage from './pages/LoginPage'
+import NotPermissionPage from './pages/NotPermissionPage'
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<DepartmentPage />} />
+        <Route path='/' element={<LoginPage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/department' element={<DepartmentPage />} />
         <Route path='/dashboard' element={<DepartmentPage />} />
         <Route path='/student' element={<StudentPage />} >
           <Route index element={<StudentList />} />
@@ -19,7 +23,7 @@ function App() {
           <Route path='add' element={<CreateStudent />} />
           <Route path=':studentId' element={<StudentDetail />} />
         </Route>
-
+        <Route path='/not-permission' element={<NotPermissionPage />} />
       </Routes>
     </>
   )

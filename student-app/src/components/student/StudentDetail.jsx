@@ -7,6 +7,7 @@ import { BsGenderAmbiguous } from "react-icons/bs";
 import { FcDepartment } from "react-icons/fc";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import Spinner from "../spinner/Spinner";
 
 export default function StudentDetail() {
     const { studentId } = useParams()
@@ -25,7 +26,7 @@ export default function StudentDetail() {
     return (
         <>
             {
-                loading ? <p>Loading...</p> : (
+                loading ? <Spinner/> : (
                     <>
                         <div className="d-flex align-items-center">
                             <img className="avatar-lg me-4" src={student?.avatarUrl} alt="" />

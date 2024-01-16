@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import ModifyStudentModal from "./ModifyStudentModal";
+import Spinner from "../spinner/Spinner";
 
 export default function StudentList() {
     const [studentList, setStudentList] = useState([])
@@ -31,7 +32,7 @@ export default function StudentList() {
             setLoading(false)
         }
         getStudentList()
-    }, [selectedStudent])
+    }, [selectedStudent, studentId])
 
     const handleRemoveStudent = (student) => {
         Swal.fire({
@@ -62,7 +63,7 @@ export default function StudentList() {
     return (
         <>
             {
-                loading ? <p>Loading ... </p> : (
+                loading ? <Spinner/> : (
                     <table className="table table-bordered table-striped table-hover rounded-3 overflow-hidden">
                         <thead className="table-secondary">
                             <tr>
@@ -113,7 +114,7 @@ export default function StudentList() {
                     </table>
                 )
             }
-            <ModifyStudentModal show={show} handleClose={setShow} studentId={studentId} />
+            <ModifyStudentModal show={show} handleClose={setShow} studentId={studentId} setStudentId={setStudentId} />
         </>
     )
 }

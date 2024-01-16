@@ -128,7 +128,7 @@ export default function CreateStudent() {
                         <input
                             type="tel"
                             className={`${errors.mobile?.message ? 'is-invalid' : ''} form-control`}
-                            placeholder="Fullname..."
+                            placeholder="Mobile..."
                             {...register('mobile')}
                         />
                         <span className="invalid-feedback">{errors.mobile?.message}</span>
