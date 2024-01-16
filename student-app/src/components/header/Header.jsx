@@ -5,6 +5,7 @@ export default function Header() {
     const navigate = useNavigate()
     const handleSignout = () => {
         navigate('/login', { replace: true })
+        document.cookie= 'student_app_token='
     }
     return (
         <nav className="navbar navbar-expand-lg ">
