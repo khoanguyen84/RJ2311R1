@@ -37,8 +37,8 @@ export default function LoginPage() {
             let data = await loginRes.json()
             if (data?.token) {
                 let date = new Date()
-                // let expires = date.setDate(date.getDate() + 1)
-                let expires = date.setMinutes(date.getMinutes() + 1)
+                let expires = date.setDate(date.getDate() + 1)
+                // let expires = date.setMinutes(date.getMinutes() + 1)
                 console.log(`student_app_token=${data?.token}; expires=${(new Date(expires)).toUTCString()}`);
                 document.cookie = `student_app_token=${data?.token}; expires=${(new Date(expires)).toUTCString()}`
                 navigate('/student', { replace: true })

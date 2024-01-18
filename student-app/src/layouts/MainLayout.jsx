@@ -5,6 +5,7 @@ import Sidebar from "../components/sidebar/Sidebar";
 import { useNavigate } from "react-router-dom";
 
 export default function MainLayout({ children }) {
+    console.log(document.cookie);
     const navigate = useNavigate()
     const getToken = () => {
         let cookieArr = document.cookie.split(';').map((item => item.split('=')))

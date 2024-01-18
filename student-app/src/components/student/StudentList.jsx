@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import { BsGenderFemale, BsGenderMale } from "react-icons/bs";
-import { FaUserTimes, FaUserCog } from "react-icons/fa";
+import { FaUserTimes, FaUserCog, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -26,7 +26,7 @@ export default function StudentList() {
         // }
         setLoading(true)
         async function getStudentList() {
-            let studentListRes = await fetch('https://6596b23a6bb4ec36ca0329d0.mockapi.io/student')
+            let studentListRes = await fetch(`${import.meta.env.VITE_API_URI}/student`)
             let data = await studentListRes.json()
             setStudentList(data)
             setLoading(false)
@@ -62,8 +62,33 @@ export default function StudentList() {
     }
     return (
         <>
+            <div className="d-flex align-items-center justify-content-between my-2">
+                <form className="d-flex align-items-center w-50">
+                    <input type="text"
+                        className="form-control form-control-sm"
+                        placeholder="search..."
+                    />
+                    <FaSearch size={20} className="text-secondary" style={{ marginLeft: '-23px' }} />
+                </form>
+                <div className="d-flex align-items-center">
+                    <div className="d-flex align-items-center me-2">
+                        <span className="me-2">Field</span>
+                        <select className="form-select form-select-sm">
+                            <option value="fullname">Fullname</option>
+                            <option value="email">Email</option>
+                        </select>
+                    </div>
+                    <div className="d-flex align-items-center">
+                        <span className="me-2">Sort</span>
+                        <select className="form-select form-select-sm">
+                            <option value="asc">Ascendent</option>
+                            <option value="desc">Descendent</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             {
-                loading ? <Spinner/> : (
+                loading ? <Spinner /> : (
                     <table className="table table-bordered table-striped table-hover rounded-3 overflow-hidden">
                         <thead className="table-secondary">
                             <tr>
@@ -114,6 +139,25 @@ export default function StudentList() {
                     </table>
                 )
             }
+            <div className="d-flex align-items-center justify-content-between">
+                <ul className="pagination">
+                    <li className="page-item">
+                        <button className="page-link">Previous</button>
+                    </li>
+                    <li className="page-item">
+                        <button className="page-link">Next</button>
+                    </li>
+                </ul>
+                <div className="d-flex align-items-center">
+                    <span style={{width: '150px'}}>Items per page</span>
+                    <select className="form-select form-select-sm" style={{width: '60px'}}>
+                        <option value={10}>10</option>
+                        <option value={30}>30</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                    </select>
+                </div>
+            </div>
             <ModifyStudentModal show={show} handleClose={setShow} studentId={studentId} setStudentId={setStudentId} />
         </>
     )
