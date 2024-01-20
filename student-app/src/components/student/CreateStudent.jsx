@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
 import { toast } from 'react-toastify'
+import axios from "axios";
+import DepartmentService from "../../services/department-service";
+import StudentService from "../../services/student-servece";
 
 const schema = yup.object({
     fullname: yup.string().required(),
@@ -22,9 +25,11 @@ export default function CreateStudent() {
 
     useEffect(() => {
         async function getDepartmentList() {
-            let departmentListRes = await fetch(`${import.meta.env.VITE_API_URI}/department`)
-            let data = await departmentListRes.json()
-            setDepartmentList(data)
+            // let departmentListRes = await fetch(`${import.meta.env.VITE_API_URI}/department`)
+            // let data = await departmentListRes.json()
+            // let departmentListRes = await axios.get(`${import.meta.env.VITE_API_URI}/department`)
+            let departmentListRes = await DepartmentService.getDepartmentList()
+            setDepartmentList(departmentListRes)
         }
         getDepartmentList()
     }, [])
@@ -56,14 +61,15 @@ export default function CreateStudent() {
         
         try {
             setIsCreating(true)
-            let createStudentRes = await fetch(`${import.meta.env.VITE_API_URI}/student`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(values)
-            })
-            let result = await createStudentRes.json();
+            // let createStudentRes = await fetch(`${import.meta.env.VITE_API_URI}/student`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(values)
+            // })
+            // let result = await createStudentRes.json();
+            let result = await StudentService.createStudent(values)
             if (result) {
                 reset()
                 toast.success('Student created succeed', { theme: 'light' })
