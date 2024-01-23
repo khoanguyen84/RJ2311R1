@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import Form from './Form';
-import { ThemeContext } from '../App';
+import { ThemeContext } from '../context/ThemeContext';
 export default function Panel() {
     const { theme } = useContext(ThemeContext)
     return (
