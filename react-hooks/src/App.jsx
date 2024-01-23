@@ -1,45 +1,7 @@
 import { useReducer } from 'react';
 import './App.css'
-
-// bước 1: tạo ra initState
-const initState = 0
-
-// bước 2: tạo ra các action => action creator (hàm tạo ra action)
-const INCREMENT = 'count/increment'
-const DESCREMENT = 'count/descrement'
-
-//action creator
-const decrement = (data) => {
-  return {
-    type: DESCREMENT,
-    payload: data
-  }
-}
-
-const increment = (data) => {
-  return {
-    type: INCREMENT,
-    payload: data
-  }
-}
-
-// bước 3: tạo reducer
-const reducer = (state, action) => {
-  console.log(action);
-  switch (action.type) {
-    case INCREMENT: {
-      return state + Number(action.payload)
-    }
-    case DESCREMENT: {
-      return state - Number(action.payload)
-    }
-    default: {
-      return state
-    }
-  }
-}
-
-//bước 4: sử
+import reducer, { initState } from './reducers/reducer';
+import { decrement, increment } from './reducers/action';
 
 function App() {
   const [number, dispatch] = useReducer(reducer, initState)
@@ -53,7 +15,6 @@ function App() {
         <button className='btn btn-dark'
           onClick={() => dispatch(increment(5))}
         >Increament</button>
-
       </div>
     </div>
   )
