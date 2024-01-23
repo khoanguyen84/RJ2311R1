@@ -1,5 +1,8 @@
-export default function Form({ theme, handleChangeTheme }) {
-    console.log('Form', theme);
+import { useContext } from "react"
+import { ThemeContext } from "../App"
+
+export default function Form() {
+    const { theme, handleChangeTheme } = useContext(ThemeContext)
     return (
         <>
             <button className={`btn btn-sm ${theme === 'light' ? 'btn-dark' : 'btn-secondary'}`}

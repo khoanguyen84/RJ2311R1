@@ -1,6 +1,13 @@
-import { useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import './App.css'
 import Panel from './components/Panel'
+
+// Context API
+// 1. Tạo context
+// 2. Provider (cung cấp data)
+// 3. Consumer (nơi sử data)
+
+export const ThemeContext = createContext()
 
 function App() {
   const [theme, setTheme] = useState('light')
@@ -8,14 +15,11 @@ function App() {
     setTheme(theme === 'light' ? 'dark' : 'light')
   }
   return (
-    <>
+    <ThemeContext.Provider value={{theme, handleChangeTheme}}>
       <div className={`container w-50 p-3 border ${theme}`}>
-        {/* <button className={`btn btn-sm ${theme === 'light' ? 'btn-dark' : 'btn-secondary'}`}
-          onClick={handleChangeTheme}
-        >Dark Mode</button> */}
-        <Panel theme={theme} handleChangeTheme={handleChangeTheme} />
+        <Panel/>
       </div>
-    </>
+    </ThemeContext.Provider>
   )
 }
 
